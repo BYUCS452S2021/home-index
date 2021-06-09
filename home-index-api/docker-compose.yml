@@ -4,24 +4,24 @@ volumes:
 services:
   mongo:
     image: "mongo:latest"
-    container_name: "${MONGO_CONTAINER_NAME}"
+    container_name: "mongo"
     restart: always
     ports:
-      - "${MONGO_CONTAINER_PORT}:27017"
+      - "27017:27017"
     volumes:
       - "db:/data/db"
   
   mongo-express:
     image: "mongo-express:latest"
-    container_name: "${ME_CONTAINER_NAME}"
+    container_name: "mongo-express"
     restart: always
     ports:
-      - "${ME_CONTAINER_PORT}:8081"
+      - "8081:8081"
 
   express:
     build: "./"
-    image: "brianholderness/auth-backend"
-    container_name: "${EXPRESS_CONTAINER_NAME}"
+    image: "brianholderness/home-index-api"
+    container_name: "home-index-api"
     restart: always
     ports:
-      - "${EXPRESS_PORT}:3000"
+      - "3000:3000"

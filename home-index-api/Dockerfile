@@ -4,9 +4,9 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN yarn install \
-&& yarn run build
+RUN npm install \
+&& npm run build
 
 EXPOSE 3000/tcp
 
-CMD ["yarn", "run", "start"]
+CMD ["npm", "run", "start"]

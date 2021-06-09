@@ -1,14 +1,13 @@
 import { Router } from 'express'
-import { readAllUsers, createUser } from '../controller/User.controller'
-import { User } from '../model/item.schema'
+import { User, UserModel } from '../model/user.schema'
 
 const router = Router()
 
-router.route('/users')
-  .get(async (_, res) => {
+router.route('/user/:username')
+  .get(async (req, res) => {
     try {
-      const users: User[] = await readAllUsers()
-      res.send(users)
+      const user: User | null = await UserModel.findOne({ username: req.params.username })
+      res.send(user)
     } catch (e) {
       console.log(e)
       res.status(500).send(e.message)
@@ -17,8 +16,25 @@ router.route('/users')
 
   .post(async (req, res) => {
     try {
-      const user = await createUser(req.body)
-      res.send(user)
+      let user = await UserModel.findOne({ username: req.params.username })
+      if (user) {
+        user.set(req.body)
+        user.save()
+        res.send(user)
+      } else {
+        let newUser = UserModel.create(req.body)
+        res.send(newUser)
+      }
+    } catch (e) {
+      console.log(e)
+      res.status(500).send(e.message)
+    }
+  })
+
+  .delete(async (req, res) => {
+    try {
+      const response = await UserModel.findOneAndDelete({ username: req.params.username })
+      res.send(response)
     } catch (e) {
       console.log(e)
       res.status(500).send(e.message)
