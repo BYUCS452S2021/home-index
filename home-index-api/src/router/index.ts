@@ -22,7 +22,7 @@ router.route('/user/:username')
         user.save()
         res.send(user)
       } else {
-        let newUser = UserModel.create(req.body)
+        let newUser = await UserModel.create(req.body)
         res.send(newUser)
       }
     } catch (e) {
